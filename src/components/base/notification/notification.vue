@@ -1,5 +1,5 @@
 <template>
-    <div :class="classes" :style="styles">
+    <div :class="classes" :style="wrapStyles">
         <Notice
             v-for="notice in notices"
             :key="notice.name"
@@ -8,6 +8,9 @@
             :type="notice.type"
             :content="notice.content"
             :duration="notice.duration"
+            :render="notice.render"
+            :has-title="notice.hasTitle"
+            :withIcon="notice.withIcon"
             :closable="notice.closable"
             :name="notice.name"
             :transition-name="notice.transitionName"
@@ -17,6 +20,8 @@
 </template>
 <script>
     import Notice from './notice.vue';
+
+    import { transferIndex, transferIncrease } from '../../../utils/transfer-queue';
 
     const prefixCls = 'ivu-notification';
     let seed = 0;
@@ -51,7 +56,8 @@
         },
         data () {
             return {
-                notices: []
+                notices: [],
+                tIndex: this.handleGetIndex()
             };
         },
         computed: {
@@ -62,6 +68,12 @@
                         [`${this.className}`]: !!this.className
                     }
                 ];
+            },
+            wrapStyles () {
+                let styles = Object.assign({}, this.styles);
+                styles['z-index'] = 1010 + this.tIndex;
+
+                return styles;
             }
         },
         methods: {
@@ -79,6 +91,7 @@
                 }, notice);
 
                 this.notices.push(_notice);
+                this.tIndex = this.handleGetIndex();
             },
             close (name) {
                 const notices = this.notices;
@@ -91,7 +104,11 @@
             },
             closeAll () {
                 this.notices = [];
-            }
+            },
+            handleGetIndex () {
+                transferIncrease();
+                return transferIndex;
+            },
         }
     };
 </script>

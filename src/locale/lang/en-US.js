@@ -1,5 +1,8 @@
-export default {
+import setLang from '../lang';
+
+const lang = {
     i: {
+        locale: 'en-US',
         select: {
             placeholder: 'Select',
             noMatch: 'No matching data',
@@ -19,7 +22,8 @@ export default {
             endTime: 'End Time',
             clear: 'Clear',
             ok: 'OK',
-            month: '',
+            datePanelLabel: '[mmmm] [yyyy]',
+            month: 'Month',
             month1: 'January',
             month2: 'February',
             month3: 'March',
@@ -32,7 +36,8 @@ export default {
             month10: 'October',
             month11: 'November',
             month12: 'December',
-            year: '',
+            year: 'Year',
+            weekStartDay: '0',
             weeks: {
                 sun: 'Sun',
                 mon: 'Mon',
@@ -89,8 +94,21 @@ export default {
             star: 'Star',
             stars: 'Stars'
         },
+        time: {
+            before: ' ago',
+            after: ' after',
+            just: 'just now',
+            seconds: ' seconds',
+            minutes: ' minutes',
+            hours: ' hours',
+            days: ' days'
+        },
         tree: {
             emptyText: 'No Data'
         }
     }
 };
+
+setLang(lang);
+
+export default lang;

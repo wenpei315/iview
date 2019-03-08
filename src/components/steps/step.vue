@@ -16,6 +16,7 @@
     </div>
 </template>
 <script>
+    import Emitter from '../../mixins/emitter';
     import { oneOf } from '../../utils/assist';
 
     const prefixCls = 'ivu-steps';
@@ -23,6 +24,7 @@
 
     export default {
         name: 'Step',
+        mixins: [ Emitter ],
         props: {
             status: {
                 validator (value) {
@@ -49,9 +51,6 @@
                 currentStatus: ''
             };
         },
-        created () {
-            this.currentStatus = this.status;
-        },
         computed: {
             wrapClasses () {
                 return [
@@ -70,9 +69,9 @@
                     icon = this.icon;
                 } else {
                     if (this.currentStatus == 'finish') {
-                        icon = 'ios-checkmark-empty';
+                        icon = 'ios-checkmark';
                     } else if (this.currentStatus == 'error') {
-                        icon = 'ios-close-empty';
+                        icon = 'ios-close';
                     }
                 }
 
@@ -97,6 +96,15 @@
                     this.$parent.setNextError();
                 }
             }
+        },
+        created () {
+            this.currentStatus = this.status;
+        },
+        mounted () {
+            this.dispatch('Steps', 'append');
+        },
+        beforeDestroy () {
+            this.dispatch('Steps', 'remove');
         }
     };
 </script>
